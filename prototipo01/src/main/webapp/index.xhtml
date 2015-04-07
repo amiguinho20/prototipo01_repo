@@ -10,11 +10,7 @@
     <h:body>  
     
       <h:form>
-      <h:outputText value="#{exemploMB.olaMundo}" />
-      
-        <p:spinner />  
-        
-        
+      	<h:outputText value="#{exemploMB.olaMundo}" />
         <p:inputText id="txt" value="#{exemploMB.filtro.pesquisa}"/>
         <p:commandButton value="converter" actionListener="#{exemploMB.converter}" update="txt"/>
       </h:form>    
