@@ -1,18 +1,29 @@
-<html xmlns="http://www.w3.org/1999/xhtml"  
-    xmlns:h="http://java.sun.com/jsf/html"  
-    xmlns:f="http://java.sun.com/jsf/core"  
-    xmlns:p="http://primefaces.org/ui">  
-  
-    <h:head>  
-  
-    </h:head>  
-      
-    <h:body>  
-    
-      <h:form>
-      	<h:outputText value="#{exemploMB.olaMundo}" />
-        <p:inputText id="txt" value="#{exemploMB.filtro.pesquisa}"/>
-        <p:commandButton value="converter" actionListener="#{exemploMB.converter}" update="txt"/>
-      </h:form>    
-    </h:body>  
-</html> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+</h:head>
+
+<h:body>
+
+	<h:form>
+		<h:panelGrid columns="1">
+			<h:outputText value="#{exemploMB.olaMundo}" />
+			<h:outputText value="#{exemploMB.contagem}" />
+			<p:inputText id="txt" value="#{exemploMB.filtro.pesquisa}" />
+			<p:commandButton value="converter"
+				actionListener="#{exemploMB.converter}" update="txt" />
+		</h:panelGrid>
+		<p:fieldset legend="Busca Textual Rápida de Teste">
+			<h:panelGrid columns="1">
+				<p:inputText id="pesquisa" value="#{exemploMB.pesquisa}"/>
+				<p:watermark value="Pesquisa Textual" for="pesquisa"/>
+				<p:commandButton value="Consultar" actionListener="#{exemploMB.pesquisar}"  />
+			</h:panelGrid>
+		</p:fieldset>
+	</h:form>
+</h:body>
+</html>
