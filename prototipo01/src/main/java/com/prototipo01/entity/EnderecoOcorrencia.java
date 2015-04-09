@@ -59,9 +59,19 @@ public class EnderecoOcorrencia implements Serializable {
 	}
 	
 	public String getEnderecoCompleto() {
-		return logradouro + ", " + numeroLogradouro + ", "
-				+ bairro + ", " + cidade + ", " + nomeUF;
+		return concatenarCamposValidos(logradouro, numeroLogradouro, bairro, cidade, nomeUF);
 	}
-
 	
+	public String concatenarCamposValidos(String... campos) {
+		String resultado = null;
+		for (String campo : campos) {
+			if(!campo.isEmpty()) {
+				if(resultado == null) {
+					resultado = campo;
+				}
+				resultado += ", " + campo; 
+			}
+		}
+		return resultado;
+	}
 }

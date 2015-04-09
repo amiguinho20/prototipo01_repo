@@ -1,6 +1,8 @@
 package com.prototipo01.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
@@ -59,5 +61,5 @@ public class Pessoa implements Serializable{
 	public String getIdBO() {
 		return numeroBO + "/" + anoBO + "/" + idDelegaciaBO;
 	}
-	
+		
 }

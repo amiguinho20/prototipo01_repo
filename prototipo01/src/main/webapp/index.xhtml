@@ -1,29 +1,81 @@
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui">  
+  
+    <h:head>  
+  
+    </h:head>  
+      
+    <h:body>  
+      <h:form id="form">
+      	
 
-<h:head>
-
-</h:head>
-
-<h:body>
-
-	<h:form>
-		<h:panelGrid columns="1">
-			<h:outputText value="#{exemploMB.olaMundo}" />
-			<h:outputText value="#{exemploMB.contagem}" />
-			<p:inputText id="txt" value="#{exemploMB.filtro.pesquisa}" />
-			<p:commandButton value="converter"
-				actionListener="#{exemploMB.converter}" update="txt" />
-		</h:panelGrid>
 		<p:fieldset legend="Busca Textual Rápida de Teste">
 			<h:panelGrid columns="1">
-				<p:inputText id="pesquisa" value="#{exemploMB.pesquisa}"/>
+				<p:inputText id="pesquisa" value="#{exemploMB.filtro.pesquisa}"/>
 				<p:watermark value="Pesquisa Textual" for="pesquisa"/>
 				<p:commandButton value="Consultar" actionListener="#{exemploMB.pesquisar}"  />
+				<p:commandButton type="button" icon="ui-icon-help" onclick="PF('dlg2').show();" />
 			</h:panelGrid>
 		</p:fieldset>
-	</h:form>
-</h:body>
-</html>
+		
+		<div>
+			<p:dataTable id="checkboxDT" var="resultado" value="#{exemploMB.pessoasResultado}" selection="#{dtSelectionView.selectedCars}" rowKey="#{car.id}"	style="margin-bottom:0">
+				<f:facet name="header">
+            		Checkbox
+        		</f:facet>
+				<p:column selectionMode="multiple" style="width:16px;text-align:center" />
+				
+				<p:column headerText="Id">
+					<h:outputText value="#{resultado.nome}" />
+				</p:column>
+				
+				<p:column headerText="Year">
+					<h:outputText value="#{resultado.localOcorrencia.enderecoCompleto}" />
+				</p:column>
+				
+				<p:column headerText="Brand">
+					<h:outputText value="#{resultado.idBO}" />
+				</p:column>
+				
+				<p:column headerText="Color">
+					<h:outputText value="#{resultado.color}" />
+				</p:column>
+				
+				<f:facet name="footer">
+					<p:commandButton process="checkboxDT" update=":form:GeoTagDetail" icon="ui-icon-search" value="Mostrar no mapa" oncomplete="PF('GeoTagDialog').show()" />
+				</f:facet>
+			</p:dataTable>
+		</div>
+
+		<p:dialog header="Modal Dialog" widgetVar="dlg2" modal="true" height="400" width="600">
+    		<p>
+    			<h:outputText value="todas estas palavras" />
+    			<p:inputText id="txt1" value="#{exemploMB.filtro.todos}"/>
+    		</p>
+    		<p>
+    			<h:outputText value="esta expressão ou frase exata:" />
+    			<p:inputText id="txt2" value="#{exemploMB.filtro.expressao}"/>
+    		</p>
+    		<p>
+    			<h:outputText value="qualquer uma destas palavras:" />
+    			<p:inputText id="txt3" value="#{exemploMB.filtro.ou}"/>
+    		</p>
+    		<p>
+    			<h:outputText value="nenhuma destas palavras:" />
+    			<p:inputText id="txt4" value="#{exemploMB.filtro.nao}"/>
+    		</p>
+    		<p>
+    			<p:commandButton value="converter" actionListener="#{exemploMB.converter}" update="pesquisa"/>
+    		</p>
+		</p:dialog>
+		
+		<p:dialog header="Modal Dialog" widgetVar="GeoTagDialog" modal="true" height="400" width="600">
+    		<p:outputPanel id="GeoTagDetail" style="text-align:center;">
+            	
+        	</p:outputPanel>
+		</p:dialog>
+      </h:form>    
+    </h:body>  
+</html> 
