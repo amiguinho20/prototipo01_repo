@@ -7,6 +7,9 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 
+import org.primefaces.model.map.DefaultMapModel;
+import org.primefaces.model.map.MapModel;
+
 import com.prototipo01.dao.RdoDAO;
 import com.prototipo01.entity.Filtro;
 import com.prototipo01.entity.MockPessoa;
@@ -27,6 +30,8 @@ public class ExemploMB implements Serializable{
 	private Integer contagem;
 	private String pesquisa;
 	
+	private String dipolLatLong = "-23.538419906917593, -46.63483794999996";
+	 
 	@Inject
 	private Conversor conversor;
 	
@@ -39,11 +44,14 @@ public class ExemploMB implements Serializable{
 	private List<Pessoa> pessoasResultado;
 	private List<Pessoa> pessoasSelecionadas;
 	
+	private MapModel geoModel;
+	
 	@PostConstruct
-	private void init()
-	{
+	private void init() {
+		geoModel = new DefaultMapModel();
 		int count = rdoDAO.contarColecao();
 		setContagem(count);
+		
 	}
 		
 	public void converter(){

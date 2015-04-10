@@ -65,11 +65,12 @@ public class EnderecoOcorrencia implements Serializable {
 	public String concatenarCamposValidos(String... campos) {
 		String resultado = null;
 		for (String campo : campos) {
-			if(!campo.isEmpty()) {
+			if(campo != null && !campo.isEmpty()) {
 				if(resultado == null) {
 					resultado = campo;
+				} else {
+					resultado += ", " + campo; 					
 				}
-				resultado += ", " + campo; 
 			}
 		}
 		return resultado;
