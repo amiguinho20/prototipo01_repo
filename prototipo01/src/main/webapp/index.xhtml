@@ -15,32 +15,28 @@
 			<h:panelGrid columns="1">
 				<p:inputText id="pesquisa" value="#{exemploMB.filtro.pesquisa}"/>
 				<p:watermark value="Pesquisa Textual" for="pesquisa"/>
-				<p:commandButton value="Consultar" actionListener="#{exemploMB.pesquisar}"  />
+				<p:commandButton value="Consultar" actionListener="#{exemploMB.pesquisar}" update="checkboxDT"  />
 				<p:commandButton type="button" icon="ui-icon-help" onclick="PF('dlg2').show();" />
 			</h:panelGrid>
 		</p:fieldset>
 		
 		<div>
-			<p:dataTable id="checkboxDT" var="resultado" value="#{exemploMB.pessoasResultado}" selection="#{dtSelectionView.selectedCars}" rowKey="#{car.id}"	style="margin-bottom:0">
+			<p:dataTable id="checkboxDT" var="resultado" value="#{exemploMB.pessoasResultado}" selection="#{exemploMB.pessoasSelecionadas}" rowKey="#{resultado.nome}"	style="margin-bottom:0">
 				<f:facet name="header">
             		Checkbox
         		</f:facet>
 				<p:column selectionMode="multiple" style="width:16px;text-align:center" />
 				
-				<p:column headerText="Id">
+				<p:column headerText="Nome">
 					<h:outputText value="#{resultado.nome}" />
 				</p:column>
 				
-				<p:column headerText="Year">
+				<p:column headerText="localidade BO">
 					<h:outputText value="#{resultado.localOcorrencia.enderecoCompleto}" />
 				</p:column>
 				
-				<p:column headerText="Brand">
+				<p:column headerText="BO">
 					<h:outputText value="#{resultado.idBO}" />
-				</p:column>
-				
-				<p:column headerText="Color">
-					<h:outputText value="#{resultado.color}" />
 				</p:column>
 				
 				<f:facet name="footer">
