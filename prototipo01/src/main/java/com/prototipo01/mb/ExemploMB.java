@@ -1,5 +1,6 @@
 package com.prototipo01.mb;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -8,7 +9,9 @@ import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 
 import org.primefaces.model.map.DefaultMapModel;
+import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
+import org.primefaces.model.map.Marker;
 
 import com.prototipo01.dao.RdoDAO;
 import com.prototipo01.entity.Filtro;
@@ -30,7 +33,10 @@ public class ExemploMB implements Serializable{
 	private Integer contagem;
 	private String pesquisa;
 	
-	private String dipolLatLong = "-23.538419906917593, -46.63483794999996";
+	private String centroMapa = "-23.538419906917593, -46.63483794999996";
+	
+	
+	
 	 
 	@Inject
 	private Conversor conversor;
@@ -48,7 +54,7 @@ public class ExemploMB implements Serializable{
 	
 	@PostConstruct
 	private void init() {
-		geoModel = new DefaultMapModel();
+		geoModel = new DefaultMapModel();		
 		int count = rdoDAO.contarColecao();
 		setContagem(count);
 		
@@ -62,6 +68,15 @@ public class ExemploMB implements Serializable{
 		//rdoDAO.pesquisar(getPesquisa());
 		
 		pessoasResultado = MockPessoa.mockPessoas();
+		
+	}
+	
+	public void visualizarLocalidades() throws IOException {
+		
+		for (Pessoa pessoa : pessoasSelecionadas) {
+			LatLng coordenada = conversor.converterEnderecoEmLatLong(pessoa.getLocalOcorrencia().getEnderecoCompleto());
+			 geoModel.addOverlay(new Marker(coordenada, pessoa.getNome() + " - " + pessoa.getLocalOcorrencia().getEnderecoCompleto() ));
+		}
 		
 	}
 
@@ -103,6 +118,22 @@ public class ExemploMB implements Serializable{
 
 	public void setPessoasSelecionadas(List<Pessoa> pessoasSelecionadas) {
 		this.pessoasSelecionadas = pessoasSelecionadas;
+	}
+
+	public String getCentroMapa() {
+		return centroMapa;
+	}
+
+	public void setCentroMapa(String centroMapa) {
+		this.centroMapa = centroMapa;
+	}
+
+	public MapModel getGeoModel() {
+		return geoModel;
+	}
+
+	public void setGeoModel(MapModel geoModel) {
+		this.geoModel = geoModel;
 	}
 	
 }
