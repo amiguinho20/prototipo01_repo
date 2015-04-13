@@ -5,8 +5,9 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.inject.Model;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
@@ -22,7 +23,8 @@ import com.prototipo01.util.Conversor;
 //@Named - @ManagedBean
 //@RequestScope
 
-@Model
+@Named
+@ViewScoped
 public class ExemploMB implements Serializable{
 
 	/**
@@ -53,8 +55,7 @@ public class ExemploMB implements Serializable{
 	private MapModel geoModel;
 	
 	@PostConstruct
-	private void init() {
-		geoModel = new DefaultMapModel();		
+	private void init() {	
 		int count = rdoDAO.contarColecao();
 		setContagem(count);
 		
@@ -72,7 +73,7 @@ public class ExemploMB implements Serializable{
 	}
 	
 	public void visualizarLocalidades() throws IOException {
-		
+		geoModel = new DefaultMapModel();		
 		for (Pessoa pessoa : pessoasSelecionadas) {
 			LatLng coordenada = conversor.converterEnderecoEmLatLong(pessoa.getLocalOcorrencia().getEnderecoCompleto());
 			 geoModel.addOverlay(new Marker(coordenada, pessoa.getNome() + " - " + pessoa.getLocalOcorrencia().getEnderecoCompleto() ));

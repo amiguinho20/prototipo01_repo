@@ -41,7 +41,7 @@
 				</p:column>
 				
 				<f:facet name="footer">				
-					<p:commandButton process="checkboxDT" update="GeoTagDialog" actionListener="#{exemploMB.visualizarLocalidades}" icon="ui-icon-search" value="Mostrar no mapa" oncomplete="PF('GeoTagDialog').show()" />
+					<p:commandButton process="checkboxDT" update="form" actionListener="#{exemploMB.visualizarLocalidades}" icon="ui-icon-search" value="Mostrar no mapa" oncomplete="PF('geoTagDialog').show()" />
 				</f:facet>
 			</p:dataTable>
 		</div>
@@ -70,8 +70,8 @@
     		</p>
 		</p:dialog>
 		
-		<p:dialog header="Modal Dialog" widgetVar="GeoTagDialog" modal="true" height="400" width="600">
-    		<p:outputPanel id="GeoTagDetail" style="text-align:center;">
+		<p:dialog header="Modal Dialog" widgetVar="geoTagDialog" modal="true" height="400" width="600">
+    		<p:outputPanel id="geoTagDetail" style="text-align:center;">
             	<p:gmap id="geoGmap" widgetVar="geoMap" center="#{exemploMB.centroMapa}" zoom="13" type="ROADMAP" model="#{exemploMB.geoModel}" style="width:100%;height:400px"/>
         	</p:outputPanel>
 		</p:dialog>
