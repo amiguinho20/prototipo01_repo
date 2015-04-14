@@ -75,10 +75,12 @@ public class RdoDAO {
 	    BasicDBObject text = new BasicDBObject("$text", search);
 	    
 	    MongoCursor<Document> cursor = colecao.find(text).iterator();
+	    
 	    try {
 	    	int qtd = 0;
 	        while (cursor.hasNext()) {
 	        	Document documento = cursor.next();
+	        	
 	            System.out.println(documento.toJson());
 	            qtd++;
 	        }
