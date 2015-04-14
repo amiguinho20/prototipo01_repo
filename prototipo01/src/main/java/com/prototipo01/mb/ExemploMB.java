@@ -22,9 +22,6 @@ import com.prototipo01.util.Conversor;
 
 //@Named - @ManagedBean
 //@RequestScope
-
-//@Model
-
 @Named
 @ViewScoped
 public class ExemploMB implements Serializable{
