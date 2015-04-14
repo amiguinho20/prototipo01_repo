@@ -14,31 +14,34 @@ public class MockPessoa {
 	
 	public static List<Pessoa> mockPessoas() {
 		
-		List<Pessoa> pessoas = new ArrayList<Pessoa>();
+		List<Pessoa> pessoas = new ArrayList<>();
 		for (int i = 0; i < quantidade; i++) {
 			Pessoa pessoa = new Pessoa();
 			pessoas.add(pessoa);
-			
 			pessoa.setNome("nome" + i);
 			pessoa.setCpf("123432236-92");
-			pessoa.setAnoBO("2015");
-			pessoa.setNumeroBO(random.nextInt(99999) +"");
-			pessoa.setIdDelegaciaBO(random.nextInt(99999) +"");
-			pessoa.setLocalOcorrencia(mockLocal(i));
-			
+			pessoa.setOcorrencia(mockOcorrencia(i));
 		}
 		
 		return pessoas;
 	}
 	
-	private static EnderecoOcorrencia mockLocal(int i) {
-		
-		EnderecoOcorrencia local = new EnderecoOcorrencia();
-		
+	private static Ocorrencia mockOcorrencia(int i)
+	{
+		Ocorrencia ocorrencia = new Ocorrencia();
+		ocorrencia.setNumero(random.nextInt(99999) + "");
+		ocorrencia.setAno("2015");
+		ocorrencia.setIdDelegacia(random.nextInt(99999) +"");
+		ocorrencia.setLocalDoFato(mockLocal(i));
+		return ocorrencia;
+	}
+	
+	private static LocalDoFato mockLocal(int i) 
+	{
+		LocalDoFato local = new LocalDoFato();
 		local.setLogradouro(logradouros[i]);
-		local.setNumeroLogradouro(numlocals[i]);
+		local.setNumero(numlocals[i]);
 		local.setCidade("São Paulo");
-		
 		return local;
 	}
 
