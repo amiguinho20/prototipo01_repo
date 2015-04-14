@@ -15,40 +15,38 @@
 			<h:panelGrid columns="1">
 				<p:inputText id="pesquisa" value="#{exemploMB.filtro.pesquisa}"/>
 				<p:watermark value="Pesquisa Textual" for="pesquisa"/>
-				<p:commandButton value="Consultar" actionListener="#{exemploMB.pesquisar}" update="checkboxDT"  />
+				<p:commandButton value="Pesquisar" actionListener="#{exemploMB.pesquisar}" update="checkboxDT"  />
 				<p:commandButton type="button" icon="ui-icon-help" onclick="PF('dlg2').show();" />
 			</h:panelGrid>
 						
 		</p:fieldset>
 		
-		<div>
-			<p:dataTable id="checkboxDT" var="resultado" value="#{exemploMB.pessoasResultado}" selection="#{exemploMB.pessoasSelecionadas}" rowKey="#{resultado.nome}"	style="margin-bottom:0">
+			<p:dataTable id="checkboxDT" var="pessoa" value="#{exemploMB.pessoasResultado}" 
+				selection="#{exemploMB.pessoasSelecionadas}" rowKey="#{pessoa.nome}" style="margin-bottom:0">
 				<f:facet name="header">
             		Checkbox
         		</f:facet>
-				<p:column selectionMode="multiple" style="width:16px;text-align:center" />
-				
+				<p:column selectionMode="multiple" style="width:16px;text-align:center"/>				
 				<p:column headerText="Nome">
-					<h:outputText value="#{resultado.nome}" />
+					<h:outputText value="#{pessoa.nome}" />
 				</p:column>
 				
 				<p:column headerText="localidade BO">
-					<h:outputText value="#{resultado.localOcorrencia.enderecoCompleto}" />
+					<h:outputText value="#{pessoa.ocorrencia.localDoFato.enderecoCompleto}" />
 				</p:column>
 				
 				<p:column headerText="BO">
-					<h:outputText value="#{resultado.idBO}" />
+					<h:outputText value="#{pessoa.ocorrencia.numero}" />
 				</p:column>
 				
 				<f:facet name="footer">				
-					<p:commandButton process="checkboxDT" update="GeoTagDialog" actionListener="#{exemploMB.visualizarLocalidades}" icon="ui-icon-search" value="Mostrar no mapa" oncomplete="PF('GeoTagDialog').show()" />
+					<p:commandButton process="checkboxDT" update="@widgetVar(geoTagDialog)" actionListener="#{exemploMB.visualizarLocalidades}" icon="ui-icon-search" value="Mostrar no mapa" oncomplete="PF('GeoTagDialog').show()" />
 				</f:facet>
 			</p:dataTable>
-		</div>
 		
 		
 
-		<p:dialog header="Modal Dialog" widgetVar="dlg2" modal="true" height="400" width="600">
+		<p:dialog header="Modal Dialog" widgetVar="dlg2" modal="true" height="400" width="600" >
     		<p>
     			<h:outputText value="todas estas palavras" />
     			<p:inputText id="txt1" value="#{exemploMB.filtro.todos}"/>
@@ -70,8 +68,8 @@
     		</p>
 		</p:dialog>
 		
-		<p:dialog header="Modal Dialog" widgetVar="GeoTagDialog" modal="true" height="400" width="600">
-    		<p:outputPanel id="GeoTagDetail" style="text-align:center;">
+		<p:dialog header="Modal Dialog" widgetVar="geoTagDialog" modal="true" height="400" width="600">
+    		<p:outputPanel id="geoTagDetail" style="text-align:center;">
             	<p:gmap id="geoGmap" widgetVar="geoMap" center="#{exemploMB.centroMapa}" zoom="13" type="ROADMAP" model="#{exemploMB.geoModel}" style="width:100%;height:400px"/>
         	</p:outputPanel>
 		</p:dialog>
