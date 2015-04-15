@@ -1,7 +1,9 @@
 package com.prototipo01.batch.eventual;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.bson.Document;
 
@@ -63,19 +65,22 @@ public class RdoDAO {
 	 * Pesquisa textual/full text (apenas no NOME_PESSOA).
 	 * @param pesquisa
 	 */
-	public void pesquisar(final String pesquisa)
+	public List<String> pesquisar(final String pesquisa, int skip, int limit)
 	{
+		List<String> pessoasRetorno = new ArrayList<>();
+		
+		
 	    BasicDBObject search = new BasicDBObject("$search", pesquisa);
 	    BasicDBObject text = new BasicDBObject("$text", search);
 	    
-	    MongoCursor<Document> cursor = colecao.find(text).limit(10).iterator();
+	    System.out.println("inicio da pesquisa... com skip:" + skip + " e limit: " + limit);
+	    MongoCursor<Document> cursor = colecao.find().skip(skip).limit(limit).iterator();
 	    
 	    try {
 	    	int qtd = 0;
+	    	System.out.println("inicio da iteracao...");
 	        while (cursor.hasNext()) {
 	        	Document documento = cursor.next();
-	        	
-	        	System.out.println("-------------");
 	        	
 	        	Document bo = (Document) documento.get("BO");
 	        	
@@ -98,26 +103,33 @@ public class RdoDAO {
 	        	
 	        	Document pessoasObj = (Document) bo.get("PESSOAS");
 	        	
-	        	if (pessoasObj.get("PESSOA") instanceof ArrayList)
+	        	if (pessoasObj != null && pessoasObj.get("PESSOA") != null)
 	        	{
-	        		List pessoaObjList = (ArrayList) pessoasObj.get("PESSOA");
-	        		pessoas = montarPessoas(pessoaObjList, ocorrencia);
+		        	if (pessoasObj.get("PESSOA") instanceof ArrayList)
+		        	{
+		        		List pessoaObjList = (ArrayList) pessoasObj.get("PESSOA");
+		        		pessoas = montarPessoas(pessoaObjList, ocorrencia);
+		        	}
+		        	else
+		        	{
+		        		Document pessoaObj = (Document) pessoasObj.get("PESSOA");
+		        		pessoas = montarPessoas(pessoaObj, ocorrencia);
+		        	}
 	        	}
-	        	else
+	        	
+	        	
+	        	for (Pessoa pessoa : pessoas)
 	        	{
-	        		Document pessoaObj = (Document) pessoasObj.get("PESSOA");
-	        		pessoas = montarPessoas(pessoaObj, ocorrencia);
+	        		String json = transformarJson(pessoa);
+	        		if (!json.isEmpty())
+	        		{
+	        			pessoasRetorno.add(json);
+	        		}
 	        	}
-	        	
-	        	
-	        	System.out.println("size: " + pessoas.size());
-	        	System.out.println("pessoas: " + pessoas);
-	        	
-
 	        	
 	            qtd++;
 	        }
-	        System.out.println("qtd[" + qtd + "] para a pesquisa [" + pesquisa + "].");
+	        //System.out.println("qtd[" + qtd + "] para a pesquisa [" + pesquisa + "].");
 	    } 
 	    catch (Exception e)
 	    {
@@ -125,6 +137,7 @@ public class RdoDAO {
 	    } finally {
 	        cursor.close();
 	    }
+	    return pessoasRetorno;
 	}
 	
 	public List<Pessoa> montarPessoas(List pessoasObj, Ocorrencia ocorrencia){
@@ -148,6 +161,69 @@ public class RdoDAO {
     	return pessoas;
 	}
 	
+	public String transformarJson(Pessoa pessoa)
+	{
+		String retorno = "";
+		if (pessoa != null && naoNuloOuVazio(pessoa.getNome()))
+		{
+			BasicDBObject json = new BasicDBObject();
+			montarAtributo(json, "NOME_PESSOA", pessoa.getNome(), true);
+			montarAtributo(json, "CPF", pessoa.getCpf());
+			montarAtributo(json, "NOMEMAE_PESSOA", pessoa.getNomeDaMae(), true);
+			montarAtributo(json, "NUM_BO", pessoa.getOcorrencia().getNumero());
+			montarAtributo(json, "ANO_BO", pessoa.getOcorrencia().getAno());
+			montarAtributo(json, "ID_DELEGACIA", pessoa.getOcorrencia().getIdDelegacia());
+			montarAtributo(json, "NOME_DELEGACIA", pessoa.getOcorrencia().getDelegacia(), true);
+			montarAtributo(json, "LOGRADOURO", pessoa.getOcorrencia().getLocalDoFato().getLogradouro(), true);
+			montarAtributo(json, "NUMERO_LOGRADOURO", pessoa.getOcorrencia().getLocalDoFato().getNumero());
+			montarAtributo(json, "BAIRRO", pessoa.getOcorrencia().getLocalDoFato().getBairro(), true);
+			montarAtributo(json, "CIDADE", pessoa.getOcorrencia().getLocalDoFato().getCidade(), true);
+			montarAtributo(json, "ID_UF", pessoa.getOcorrencia().getLocalDoFato().getUf());
+			retorno = json.toString();
+		}
+			
+		return retorno;
+	}
+	
+	public BasicDBObject montarAtributo(BasicDBObject json, String atributo, String valor)
+	{
+		return montarAtributo(json, atributo, valor, false);
+	}
+	
+	public BasicDBObject montarAtributo(BasicDBObject json, String atributo, String valor, boolean retirarAcento)
+	{
+		if (naoNuloOuVazio(valor))
+		{
+			if (retirarAcento)
+			{
+				valor = retirarAcentos(valor);
+			}
+			json.append(atributo, valor);
+		}
+		return json;
+	}
+	
+	public String retirarAcentos(String arg)
+	{
+	    String normalizador = Normalizer.normalize(arg, Normalizer.Form.NFD);
+	    Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+	    String retorno = pattern.matcher(normalizador).replaceAll("");
+	    return retorno;
+	}
+	
+	public boolean naoNuloOuVazio(String arg)
+	{
+		boolean naoNuloOuVazio = true;
+		if (arg == null || 
+				arg.trim().isEmpty() || 
+				arg.equalsIgnoreCase("null") || 
+				arg.equalsIgnoreCase("00000000000") || 
+				arg.equalsIgnoreCase("DESCONHECIDO"))
+		{
+			naoNuloOuVazio = false;
+		}
+		return naoNuloOuVazio;
+	}
 
 	
 }

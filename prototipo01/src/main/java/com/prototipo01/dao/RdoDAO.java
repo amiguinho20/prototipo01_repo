@@ -89,13 +89,6 @@ public class RdoDAO {
 	        cursor.close();
 	    }
 	    
-		//final BasicDBObject textSearchCommand = new BasicDBObject();
-	    //textSearchCommand.put("text", COLECAO);
-	    //textSearchCommand.put("search", pesquisa);
-	    //DBObject q = QueryBuilder.start().text(consulta).get();
-	    //colecao.find(filter)
-	    //colecao.find(textSearchCommand);
-	    //banco.runCommand(textSearchCommand);
-	    //final CommandResult commandResult = banco.command(textSearchCommand);
+
 	}
 }
