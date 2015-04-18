@@ -52,12 +52,62 @@ public class Ocorrencia implements Serializable{
 	public void setLocalDoFato(LocalDoFato localDoFato) {
 		this.localDoFato = localDoFato;
 	}
+	
+	public String getFormatada()
+	{
+		return getNumero() + "/" + getAno() + "/" + getDelegacia();
+	}
 
 	@Override
 	public String toString() {
 		return "Ocorrencia [numero=" + numero + ", ano=" + ano + ", delegacia="
 				+ delegacia + ", idDelegacia=" + idDelegacia + ", localDoFato="
 				+ localDoFato + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((ano == null) ? 0 : ano.hashCode());
+		result = prime * result
+				+ ((idDelegacia == null) ? 0 : idDelegacia.hashCode());
+		result = prime * result
+				+ ((localDoFato == null) ? 0 : localDoFato.hashCode());
+		result = prime * result + ((numero == null) ? 0 : numero.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Ocorrencia other = (Ocorrencia) obj;
+		if (ano == null) {
+			if (other.ano != null)
+				return false;
+		} else if (!ano.equals(other.ano))
+			return false;
+		if (idDelegacia == null) {
+			if (other.idDelegacia != null)
+				return false;
+		} else if (!idDelegacia.equals(other.idDelegacia))
+			return false;
+		if (localDoFato == null) {
+			if (other.localDoFato != null)
+				return false;
+		} else if (!localDoFato.equals(other.localDoFato))
+			return false;
+		if (numero == null) {
+			if (other.numero != null)
+				return false;
+		} else if (!numero.equals(other.numero))
+			return false;
+		return true;
 	}
 	
 	
