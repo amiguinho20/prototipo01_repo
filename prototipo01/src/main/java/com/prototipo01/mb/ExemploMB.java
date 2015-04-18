@@ -1,5 +1,7 @@
 package com.prototipo01.mb;
 
+import static com.prototipo01.util.Verificador.isValorado;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
@@ -9,25 +11,25 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
 import org.primefaces.model.map.Marker;
 
+import com.prototipo01.dao.PessoaDAO;
 import com.prototipo01.dao.RdoDAO;
 import com.prototipo01.entity.Filtro;
-import com.prototipo01.entity.MockPessoa;
 import com.prototipo01.entity.Pessoa;
 import com.prototipo01.util.Conversor;
+import com.prototipo01.util.PessoaLazyDataModel;
 
-//@Named - @ManagedBean
-//@RequestScope
 @Named
 @ViewScoped
 public class ExemploMB implements Serializable{
 
 	/**
-	 * 
+	 *   
 	 */
 	private static final long serialVersionUID = -928021531814583237L;
 
@@ -45,6 +47,9 @@ public class ExemploMB implements Serializable{
 	@Inject
 	private RdoDAO rdoDAO;
 	
+	@Inject PessoaDAO pessoaDAO;
+	
+	private LazyDataModel<Pessoa> pessoasResultadoLazy;
 	private List<Pessoa> pessoasResultado;
 	private List<Pessoa> pessoasSelecionadas;
 	
@@ -52,9 +57,8 @@ public class ExemploMB implements Serializable{
 	
 	@PostConstruct
 	private void init() {	
-		int count = rdoDAO.contarColecao();
-		setContagem(count);
-		
+		//int count = rdoDAO.contarColecao();
+		//setContagem(count);
 	}
 		
 	public void converter(){
@@ -62,17 +66,26 @@ public class ExemploMB implements Serializable{
 	}
 	
 	public void pesquisar(){
-		//rdoDAO.pesquisar(getPesquisa());
+		
+		String pesq = getFiltro().getPesquisa();
+		if (isValorado(pesq)) 
+		{
+			//List<Pessoa> pessoas = pessoaDAO.pesquisar(pesq);
+ 			//setPessoasResultado(pessoas);
+ 			
+ 			setPessoasResultadoLazy(new PessoaLazyDataModel(pessoaDAO, pesq));
+ 			setContagem(getPessoasResultadoLazy().getRowCount());
+ 		}
 		 
-		pessoasResultado = MockPessoa.mockPessoas();
+		//pessoasResultado = MockPessoa.mockPessoas();
 		
 	}
 	
 	public void visualizarLocalidades() throws IOException {
-		geoModel = new DefaultMapModel();		
+		geoModel = new DefaultMapModel();  		
 		for (Pessoa pessoa : pessoasSelecionadas) {
 			LatLng coordenada = conversor.converterEnderecoEmLatLong(pessoa.getOcorrencia().getLocalDoFato().getEnderecoCompleto());
-			 geoModel.addOverlay(new Marker(coordenada, pessoa.getNome() + " - " + pessoa.getOcorrencia().getLocalDoFato().getEnderecoCompleto() ));
+			geoModel.addOverlay(new Marker(coordenada, pessoa.getNome() + " - " + pessoa.getOcorrencia().getLocalDoFato().getEnderecoCompleto() ));
 		}
 		
 	}
@@ -131,6 +144,14 @@ public class ExemploMB implements Serializable{
 
 	public void setGeoModel(MapModel geoModel) {
 		this.geoModel = geoModel;
+	}
+
+	public LazyDataModel<Pessoa> getPessoasResultadoLazy() {
+		return pessoasResultadoLazy;
+	}
+
+	public void setPessoasResultadoLazy(LazyDataModel<Pessoa> pessoasResultadoLazy) {
+		this.pessoasResultadoLazy = pessoasResultadoLazy;
 	}
 	
 }
