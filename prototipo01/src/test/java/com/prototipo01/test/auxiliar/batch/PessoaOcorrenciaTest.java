@@ -1,6 +1,6 @@
 package com.prototipo01.test.auxiliar.batch;
 
-import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.List;
 
 import org.junit.After;
@@ -42,11 +42,11 @@ public class PessoaOcorrenciaTest {
 				break;
 			}
 			try{
-				FileWriter writer = new FileWriter("/Users/Amiguinho/Fences/" + count + ".json");
+				PrintWriter writer = new PrintWriter("/Users/Amiguinho/Fences/pula" + count + ".json");
 				System.out.println("montagem do arquivo... " + count + " com pessoas: " + pessoas.size());
 				for (String pessoa : pessoas)
 				{
-					writer.write(pessoa);
+					writer.println(pessoa);
 				}
 				writer.close();
 			} catch( Exception e ){
