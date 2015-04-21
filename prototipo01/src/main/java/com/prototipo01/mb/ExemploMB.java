@@ -36,7 +36,6 @@ public class ExemploMB implements Serializable{
 	private static final long serialVersionUID = -928021531814583237L;
 
 	private Integer contagem;
-	private String pesquisa;
 	
 	private String centroMapa = "-23.538419906917593, -46.63483794999996";
 	
@@ -50,6 +49,8 @@ public class ExemploMB implements Serializable{
 	private RdoDAO rdoDAO;
 	
 	@Inject PessoaDAO pessoaDAO;
+	
+	private boolean pesquisaAvancadaAcionada;
 	
 	private LazyDataModel<Pessoa> pessoasResultadoLazy;
 	private List<Pessoa> pessoasResultado;
@@ -91,6 +92,22 @@ public class ExemploMB implements Serializable{
 		}
 		
 	}
+	
+	public void montarPesquisa()
+	{
+		getFiltro().avancadoParaSimples();
+		desacionarPesquisaAvancada();
+	}
+	
+	public void acionarPesquisaAvancada()
+	{
+		setPesquisaAvancadaAcionada(true);
+	}
+	
+	public void desacionarPesquisaAvancada()
+	{
+		setPesquisaAvancadaAcionada(false);
+	}
 
 	public Filtro getFiltro() {
 		return filtro;
@@ -106,14 +123,6 @@ public class ExemploMB implements Serializable{
 
 	public void setContagem(Integer contagem) {
 		this.contagem = contagem;
-	}
-
-	public String getPesquisa() {
-		return pesquisa;
-	}
-
-	public void setPesquisa(String pesquisa) {
-		this.pesquisa = pesquisa;
 	}
 
 	public List<Pessoa> getPessoasResultado() {
@@ -154,6 +163,14 @@ public class ExemploMB implements Serializable{
 
 	public void setPessoasResultadoLazy(LazyDataModel<Pessoa> pessoasResultadoLazy) {
 		this.pessoasResultadoLazy = pessoasResultadoLazy;
+	}
+
+	public boolean isPesquisaAvancadaAcionada() {
+		return pesquisaAvancadaAcionada;
+	}
+
+	public void setPesquisaAvancadaAcionada(boolean pesquisaAvancadaAcionada) {
+		this.pesquisaAvancadaAcionada = pesquisaAvancadaAcionada;
 	}
 	
 }

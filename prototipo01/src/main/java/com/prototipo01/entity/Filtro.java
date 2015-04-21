@@ -2,11 +2,11 @@ package com.prototipo01.entity;
 
 import java.io.Serializable;
 
-import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 @Named
-@RequestScoped
+@ViewScoped
 public class Filtro implements Serializable{
 	
 	private String pesquisa;
@@ -14,6 +14,7 @@ public class Filtro implements Serializable{
 	private String expressao;
 	private String ou;
 	private String nao;
+	
 	public String getPesquisa() {
 		return pesquisa;
 	}
@@ -45,6 +46,16 @@ public class Filtro implements Serializable{
 		this.nao = nao;
 	}
 	
+	public void avancadoParaSimples(){
+		pesquisa = todos + expressao + ou + nao;
+		todos = "";
+		expressao = "";
+		ou = "";
+		nao = "";
+	}
 	
+	public void simplesParaAvancada(){
+		
+	}
 
 }
