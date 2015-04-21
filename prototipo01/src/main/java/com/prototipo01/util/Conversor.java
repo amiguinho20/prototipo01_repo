@@ -33,7 +33,7 @@ public class Conversor implements Serializable{
 		
 			GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setAddress(endereco).setLanguage(IDIOMA).getGeocoderRequest();
 			GeocodeResponse geocoderResponse = geocoder.geocode(geocoderRequest);
-			List<GeocoderResult> results = geocoderResponse.getResults();
+			List<GeocoderResult> results = geocoderResponse.getResults(); 
 			float latitude = results.get(0).getGeometry().getLocation().getLat().floatValue();
 		    float longitude = results.get(0).getGeometry().getLocation().getLng().floatValue();
 		

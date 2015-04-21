@@ -24,6 +24,7 @@ public class PessoaConverter implements Converter<Pessoa>{
 		Ocorrencia ocorrencia = pessoa.getOcorrencia();
 		LocalDoFato localDoFato = ocorrencia.getLocalDoFato();
 		
+		pessoa.setId(doc.get("_id").toString());
 		pessoa.setNome(doc.getString("NOME_PESSOA"));
 		pessoa.setCpf(doc.getString("CPF"));
 		pessoa.setNomeDaMae(doc.getString("NOMEMAE_PESSOA"));

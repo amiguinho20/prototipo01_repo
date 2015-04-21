@@ -1,5 +1,7 @@
 package com.prototipo01.dao;
 
+import static com.mongodb.client.model.Filters.eq;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,10 +12,12 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
@@ -61,6 +65,17 @@ public class PessoaDAO {
 	}
 	
 	/**
+	 * Consulta pelo id (identificador unico), o "_id"
+	 * @param id
+	 */
+	public Pessoa consultar(final String id)
+	{
+	    Document documento = colecao.find(eq("_id", new ObjectId(id))).first();
+	    Pessoa pessoa = converter.paraObjeto(documento);
+	    return pessoa;
+	}
+	
+	/**
 	 * Pesquisa textual/full text (apenas no NOME_PESSOA).
 	 * @param pesquisa
 	 */
@@ -71,8 +86,25 @@ public class PessoaDAO {
 		BasicDBObject search = new BasicDBObject("$search", pesquisa);
 	    BasicDBObject text = new BasicDBObject("$text", search); 
 	    
-	    MongoCursor<Document> cursor = colecao.find(text).iterator();
+	    //ExplainVerbosity ex;
+	    //FindModel fm;
 	    
+	    //banco.
+	    
+	    
+	    //colecao.explain(new FindModel(new FindOptions().criteria(new Document("x", 1))),
+        //        ExplainVerbosity.ALL_PLANS_EXECUTIONS);
+	    
+	    //colecao.find().
+	    
+	    BasicDBObject doc = new BasicDBObject("$explain", text);
+	    doc.append("verbosity", "allPlansExecution");
+	    
+	    FindIterable<Document> fi = colecao.find(doc);
+	    Document primeiro = fi.first();
+	    
+	    MongoCursor<Document> cursor = colecao.find(text).iterator();
+	   
 	    try {
 	        while (cursor.hasNext()) {
 	        	Document documento = cursor.next();

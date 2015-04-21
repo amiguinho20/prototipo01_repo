@@ -4,13 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
-
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
 import com.prototipo01.dao.PessoaDAO;
-import com.prototipo01.entity.Pessoa; 
+import com.prototipo01.entity.Pessoa;
 
 public class PessoaLazyDataModel extends LazyDataModel<Pessoa>{
 
@@ -27,30 +25,17 @@ public class PessoaLazyDataModel extends LazyDataModel<Pessoa>{
 		this.pessoaDAO = pessoaDAO;
 		this.pesquisa = pesquisa;
 	}
-	
+
+	/**
+	 * Metodo necessario para o "cache" dos registros selecionados via rowSelectMode = checkbox
+	 */
 	@Override
 	public Pessoa getRowData(String rowKey) 
 	{
-		Pessoa pessoaRetorno = null;
-		for(Pessoa pessoa : pessoas) 
-		{
-			if (pessoa.hashCode() == Integer.parseInt(rowKey))
-			{
-				pessoaRetorno = pessoa;
-				break;
-	        }
-		}
-		return pessoaRetorno;
+		Pessoa pessoa = pessoaDAO.consultar(rowKey);
+		return pessoa;
 	}
-	
-	
-	@Override
-	public Object getRowKey(Pessoa pessoa) 
-	{
-		//TODO cuidado com isso... apenas teste
-		return pessoa.hashCode();
-	}
-	
+
 	
 	@Override
 	public List<Pessoa> load(int first, int pageSize, String sortField,
@@ -60,7 +45,7 @@ public class PessoaLazyDataModel extends LazyDataModel<Pessoa>{
 		
 		int count = pessoaDAO.contar(pesquisa);
 		setRowCount(count);
-		
+
 		return pessoas;
 	}
 

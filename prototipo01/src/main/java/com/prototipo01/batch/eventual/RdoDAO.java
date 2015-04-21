@@ -10,6 +10,7 @@ import org.bson.Document;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
@@ -60,6 +61,30 @@ public class RdoDAO {
 		int countI = countL.intValue();
 		return countI;
 	} 
+	
+	public void teste()
+	{
+		BasicDBObject search = new BasicDBObject("$search", "eduardo");
+		System.out.println("search: " + search);
+	    BasicDBObject text = new BasicDBObject("$text", search); 
+	    System.out.println("text: " + text);
+
+		
+	    BasicDBObject doc = new BasicDBObject("explain", text);
+	    System.out.println("expl: " + doc);
+	    doc = doc.append("verbosity", "allPlansExecution");
+	    System.out.println("verb: " + doc);
+	    
+	    FindIterable<Document> fi = colecao.find(doc);
+	    System.out.println("fi: " + fi);
+	    try{
+	    Document primeiro = fi.first();
+	    System.out.println("primeiro: " + primeiro);
+	    }catch (Exception e)
+	    {
+	    	e.printStackTrace();
+	    }
+	}
 	
 	/**
 	 * Pesquisa textual/full text (apenas no NOME_PESSOA).

@@ -4,7 +4,9 @@ import static com.prototipo01.util.Verificador.isValorado;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
@@ -72,15 +74,15 @@ public class ExemploMB implements Serializable{
 		{
 			//List<Pessoa> pessoas = pessoaDAO.pesquisar(pesq);
  			//setPessoasResultado(pessoas);
- 			
+ 			 
  			setPessoasResultadoLazy(new PessoaLazyDataModel(pessoaDAO, pesq));
  			setContagem(getPessoasResultadoLazy().getRowCount());
  		}
 		 
 		//pessoasResultado = MockPessoa.mockPessoas();
-		
+		 
 	}
-	
+
 	public void visualizarLocalidades() throws IOException {
 		geoModel = new DefaultMapModel();  		
 		for (Pessoa pessoa : pessoasSelecionadas) {

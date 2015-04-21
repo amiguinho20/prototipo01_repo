@@ -6,6 +6,7 @@ import java.io.Serializable;
 public class Pessoa implements Serializable{
 	
 	private static final long serialVersionUID = -6240504738885913212L;
+	private String id; //-- apenas para o rowKey do primefaces
 	private String nome;
 	private String cpf;
 	private String nomeDaMae;
@@ -19,7 +20,7 @@ public class Pessoa implements Serializable{
 		this.nomeDaMae = nomeDaMae;
 		this.ocorrencia = ocorrencia;
 	}
-
+	
 	public String getNome() {
 		return nome;
 	}
@@ -44,23 +45,25 @@ public class Pessoa implements Serializable{
 	public void setOcorrencia(Ocorrencia ocorrencia) {
 		this.ocorrencia = ocorrencia;
 	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	@Override
 	public String toString() {
-		return "Pessoa [nome=" + nome + ", cpf=" + cpf + ", nomeDaMae="
-				+ nomeDaMae + ", ocorrencia=" + ocorrencia + "]";
+		return "Pessoa [id=" + id + ", nome=" + nome + ", cpf=" + cpf
+				+ ", nomeDaMae=" + nomeDaMae + ", ocorrencia=" + ocorrencia
+				+ "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((cpf == null) ? 0 : cpf.hashCode());
-		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
-		result = prime * result
-				+ ((nomeDaMae == null) ? 0 : nomeDaMae.hashCode());
-		result = prime * result
-				+ ((ocorrencia == null) ? 0 : ocorrencia.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
@@ -73,25 +76,10 @@ public class Pessoa implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Pessoa other = (Pessoa) obj;
-		if (cpf == null) {
-			if (other.cpf != null)
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!cpf.equals(other.cpf))
-			return false;
-		if (nome == null) {
-			if (other.nome != null)
-				return false;
-		} else if (!nome.equals(other.nome))
-			return false;
-		if (nomeDaMae == null) {
-			if (other.nomeDaMae != null)
-				return false;
-		} else if (!nomeDaMae.equals(other.nomeDaMae))
-			return false;
-		if (ocorrencia == null) {
-			if (other.ocorrencia != null)
-				return false;
-		} else if (!ocorrencia.equals(other.ocorrencia))
+		} else if (!id.equals(other.id))
 			return false;
 		return true;
 	}

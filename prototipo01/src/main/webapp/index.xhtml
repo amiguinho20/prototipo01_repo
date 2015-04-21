@@ -30,13 +30,15 @@
 			value="#{exemploMB.pessoasResultadoLazy}"
 			lazy="true"
 			selection="#{exemploMB.pessoasSelecionadas}" 
+			rowSelectMode="checkbox"
+			rowKey="#{pessoa.id}"
 			style="margin:20px;" paginator="true"
 			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 			rows="5" rowsPerPageTemplate="5,10,15">
 			<f:facet name="header">
             	Pessoas Lazy Load (consulta paginada)
         	</f:facet>
-			<p:column selectionMode="multiple" style="width:16px;text-align:center" />
+ 			<p:column selectionMode="multiple" style="width:16px;text-align:center" />
 			<p:column headerText="Nome">
 				<h:outputText value="#{pessoa.nome}" />
 			</p:column>
@@ -48,7 +50,7 @@
 			</p:column>
 
 			<f:facet name="footer">
-				<h:outputText value="Total reg. da Pesquisa: #{exemploMB.contagem}   " />
+				<h:outputText value="Total reg. da Pesquisa: #{exemploMB.pessoasResultadoLazy.rowCount}   " />
 			
 				<p:commandButton process="listaDePessoasLazy"
 					update="@widgetVar(mapaWidget)"

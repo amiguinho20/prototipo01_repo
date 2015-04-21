@@ -28,6 +28,12 @@ public class PessoaOcorrenciaTest {
 	}
 	
 	@Test
+	public void teste()
+	{
+		rdoDAO.teste();	
+	}
+	
+	//@Test
 	public void testExtrairPessoas()
 	{
 		
