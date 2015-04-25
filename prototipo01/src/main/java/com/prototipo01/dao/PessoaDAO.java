@@ -22,6 +22,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.prototipo01.converter.Converter;
+import com.prototipo01.entity.Ocorrencia;
 import com.prototipo01.entity.Pessoa;
 
 @Named
@@ -138,10 +139,15 @@ public class PessoaDAO {
 	        	Document documento = cursor.next();
 	        	Pessoa pessoa = converter.paraObjeto(documento);
 	        	pessoas.add(pessoa);
+	        	
+	        	//-- associa ocorrencias de envolvimento
+	        	List<Ocorrencia> envolvimentos = pesquisarPorNome(pessoa);
+	        	pessoa.setOcorrenciasDeEnvolvimento(envolvimentos);
 	        }
 	    } finally {
 	        cursor.close();
 	    }
+	    
 	    return pessoas;
 	}
 	
@@ -161,5 +167,39 @@ public class PessoaDAO {
 	    return countI;
 	}
 	
+	/**
+	 * Pesquisa por nome e EXCLUI o registro utilizado no filtro da lista de resultado.
+	 * O resultado sao as demais ocorrencias que esta pessoa esta envolvida.
+	 * @param pessoaArg
+	 * @return
+	 */
+	public List<Ocorrencia> pesquisarPorNome(Pessoa pessoaArg)
+	{
+		List<Pessoa> pessoas = new ArrayList<>();
+		List<Ocorrencia> ocorrencias = new ArrayList<>();
+		
+		BasicDBObject pesquisa = new BasicDBObject("NOME_PESSOA", pessoaArg.getNome());
+	    
+	    MongoCursor<Document> cursor = colecao.find(pesquisa).iterator();
+	    
+	    try {
+	        while (cursor.hasNext()) {
+	        	Document documento = cursor.next();
+	        	Pessoa pessoa = converter.paraObjeto(documento);
+	        	pessoas.add(pessoa);
+	        }
+	        pessoas.remove(pessoaArg);
+	    } finally {
+	        cursor.close();
+	    }
+	    
+	    for (Pessoa pessoa : pessoas)
+	    {
+	    	ocorrencias.add(pessoa.getOcorrencia());
+	    }
+	    
+	    return ocorrencias;	
+	}
+
 	
 }

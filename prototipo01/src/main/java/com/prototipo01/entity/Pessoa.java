@@ -1,6 +1,8 @@
 package com.prototipo01.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Pessoa implements Serializable{
@@ -11,6 +13,7 @@ public class Pessoa implements Serializable{
 	private String cpf;
 	private String nomeDaMae;
 	private Ocorrencia ocorrencia = new Ocorrencia();
+	private List<Ocorrencia> ocorrenciasDeEnvolvimento = new ArrayList<>();
 
 	public Pessoa(){}
 	
@@ -83,7 +86,16 @@ public class Pessoa implements Serializable{
 			return false;
 		return true;
 	}
-		
-	
+
+	public List<Ocorrencia> getOcorrenciasDeEnvolvimento() {
+		return ocorrenciasDeEnvolvimento;
+	}
+
+	public void setOcorrenciasDeEnvolvimento(
+			List<Ocorrencia> ocorrenciasDeEnvolvimento) {
+		this.ocorrenciasDeEnvolvimento = ocorrenciasDeEnvolvimento;
+	}
+
+
 	
 }

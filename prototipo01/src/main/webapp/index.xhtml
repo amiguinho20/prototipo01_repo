@@ -1,7 +1,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
 
 <h:head>
 	<script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
@@ -106,6 +107,9 @@
             	Pessoas Lazy Load (consulta paginada)
         	</f:facet>
  			<p:column selectionMode="multiple" style="width:16px;text-align:center" />
+			<p:column style="width:16px">
+            	<p:rowToggler />
+			</p:column>
 			<p:column headerText="Nome">
 				<h:outputText value="#{pessoa.nome}" />
 			</p:column>
@@ -115,6 +119,23 @@
 			<p:column headerText="Local do Fato">
 				<h:outputText value="#{pessoa.ocorrencia.localDoFato.enderecoCompleto}" />
 			</p:column>
+			<p:column headerText="Envolvimento em Ocorrências">
+				<h:outputText value="#{fn:length(pessoa.ocorrenciasDeEnvolvimento)}" />
+			</p:column>
+			<p:column headerText="Envolvidos">
+			</p:column>
+			
+			<p:rowExpansion>
+				<p:panel header="Detalhe">
+					<p:dataList value="#{pessoa.ocorrenciasDeEnvolvimento}" var="ocorrencia" type="ordered">
+        				<f:facet name="header">
+            				<h:outputText value="Envolvimento em Ocorrências" />
+        				</f:facet>
+        				<h:outputText value="#{ocorrencia.formatada}" />
+    				</p:dataList>
+				</p:panel>
+			</p:rowExpansion>
+
 
 			<f:facet name="footer">
 				<h:outputText value="Total reg. da Pesquisa: #{exemploMB.pessoasResultadoLazy.rowCount}   " />
