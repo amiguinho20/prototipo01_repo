@@ -47,15 +47,43 @@ public class Filtro implements Serializable{
 	}
 	
 	public void avancadoParaSimples(){
-		pesquisa = todos + expressao + ou + nao;
+		pesquisa = "";
+		pesquisa = concatenar(pesquisa, todos);
+		pesquisa = concatenar(pesquisa, expressao);
+		pesquisa = concatenar(pesquisa, ou);
+		pesquisa = concatenar(pesquisa, nao);
 		todos = "";
 		expressao = "";
 		ou = "";
 		nao = "";
 	}
 	
+	/**
+	 * Concatena arg2 em arg1.
+	 * @param arg1
+	 * @param arg2
+	 * @return
+	 */
+	private String concatenar(String arg1, String arg2)
+	{
+		if (arg2 != null && !arg2.trim().isEmpty())
+		{
+			arg1 += arg2.trim() + " ";
+		}
+		return arg1;
+	}
+	
 	public void simplesParaAvancada(){
 		
 	}
 
+	@Override
+	public String toString() {
+		return "Filtro [pesquisa=" + pesquisa + ", todos=" + todos
+				+ ", expressao=" + expressao + ", ou=" + ou + ", nao=" + nao
+				+ "]";
+	}
+
+	
+	
 }

@@ -4,9 +4,7 @@ import static com.prototipo01.util.Verificador.isValorado;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
@@ -42,18 +40,18 @@ public class ExemploMB implements Serializable{
 	@Inject
 	private Conversor conversor;
 	
-	@Inject
-	private Filtro filtro;
 	
 	@Inject
 	private RdoDAO rdoDAO;
 	
-	@Inject PessoaDAO pessoaDAO;
+	@Inject 
+	private PessoaDAO pessoaDAO;
+	
+	@Inject
+	private Filtro filtro;
 	
 	private boolean pesquisaAvancadaAcionada;
-	
 	private LazyDataModel<Pessoa> pessoasResultadoLazy;
-	private List<Pessoa> pessoasResultado;
 	private List<Pessoa> pessoasSelecionadas;
 	
 	private MapModel geoModel;
@@ -62,10 +60,7 @@ public class ExemploMB implements Serializable{
 	private void init() {	
 		//int count = rdoDAO.contarColecao();
 		//setContagem(count);
-	}
-		
-	public void converter(){
-		conversor.converter(filtro);
+		//filtro = new Filtro();
 	}
 	
 	public void pesquisar(){
@@ -123,14 +118,6 @@ public class ExemploMB implements Serializable{
 
 	public void setContagem(Integer contagem) {
 		this.contagem = contagem;
-	}
-
-	public List<Pessoa> getPessoasResultado() {
-		return pessoasResultado;
-	}
-
-	public void setPessoasResultado(List<Pessoa> pessoasResultado) {
-		this.pessoasResultado = pessoasResultado;
 	}
 
 	public List<Pessoa> getPessoasSelecionadas() {

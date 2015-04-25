@@ -10,6 +10,12 @@
 			font-family: Courier, sans-serif;
 			color: gray;
 		}
+		.textoItalico {
+			font-style: italic;
+		}
+		.textoNegrito {
+			font-weight: bold;
+		}
 	</style>
 </h:head>
 
@@ -29,7 +35,7 @@
 				<p:commandButton id="btnAjuda" actionListener="#{exemploMB.acionarPesquisaAvancada}" 
 					update="panelPesquisa" icon="ui-icon-help" disabled="#{exemploMB.pesquisaAvancadaAcionada}" />
 			</h:panelGrid> 
-			<p:panel id="pesquisaAvancada" header="Pesquisa Avançada" rendered="#{exemploMB.pesquisaAvancadaAcionada}">
+			<p:panel id="pesquisaAvancada" header="Pesquisa Avançada" rendered="#{exemploMB.pesquisaAvancadaAcionada}" style="margin: 10px 0px 10px 0px;">
 				<h:panelGrid columns="3">
 					<h:outputText value="Localizar pessoas com..." />
 					<h:outputText value="" />
@@ -38,30 +44,39 @@
 					<h:outputText value="todas estas palavras:" />
 					<p:inputText value="#{exemploMB.filtro.todos}" style="width: 300px;" />
 					<h:panelGroup>
-						<h:outputText value="Digite as palavras importantes: " />
-						<h:outputText value="rat terrier tricolor" styleClass="textoExemplo" />
+						<h:outputText value="Digite as palavras importantes entre aspas e separadas por espaço em branco " />
+						<h:outputText value="(conjunção aditiva " styleClass="textoItalico"/>
+						<h:outputText value="E " styleClass="textoItalico textoNegrito" />
+						<h:outputText value=") " styleClass="textoItalico" />
+						<h:outputText value=": " />
+						<h:outputText value="&quot;cachorro&quot; &quot;terrier&quot; &quot;tricolor&quot;" styleClass="textoExemplo" />
 					</h:panelGroup>
 					
 					<h:outputText value="esta expressão ou frase exata:" />
 					<p:inputText value="#{exemploMB.filtro.expressao}" style="width: 300px;" />
 					<h:panelGroup>
-						<h:outputText value="Coloque palavras exatas entre aspas: " />
-						<h:outputText value="&quot;rat terrier&quot;" styleClass="textoExemplo" />
+						<h:outputText value="Coloque a expressão (frase, termo ou oração) exata entre aspas: " />
+						<h:outputText value="&quot;bull terrier&quot;" styleClass="textoExemplo" />
 					</h:panelGroup>
 					
 					<h:outputText value="qualquer uma destas palavras:" />
 					<p:inputText value="#{exemploMB.filtro.ou}" style="width: 300px;" />
 					<h:panelGroup>
 						<h:outputText value="Digite " />
-						<h:outputText value="OR " styleClass="textoExemplo"  />
-						<h:outputText value="entre todas as palavras que você deseja: " />
-						<h:outputText value="miniatura OR padrão" styleClass="textoExemplo" />
+						<h:outputText value="todas as palavras que você deseja, separadas por espaço em branco " />
+						<h:outputText value="(conjunção disjuntiva/adversativa " styleClass="textoItalico"/>
+						<h:outputText value="OU " styleClass="textoItalico textoNegrito" />
+						<h:outputText value=") " styleClass="textoItalico" />
+						<h:outputText value=": " />
+						<h:outputText value="miniatura padrão" styleClass="textoExemplo" />
 					</h:panelGroup>
 					
 					<h:outputText value="nenhuma destas palavras:" />
 					<p:inputText value="#{exemploMB.filtro.nao}" style="width: 300px;" />
 					<h:panelGroup>
-						<h:outputText value="Coloque um sinal de menos antes das palavras que você não deseja:   " />
+						<h:outputText value="Coloque um sinal de menos antes das palavras ou expressões que você não deseja " />
+						<h:outputText value="(negação) " styleClass="textoItalico"/>
+						<h:outputText value=": " />
 						<h:outputText value="-roedor, -&quot;Jack Russell&quot;" styleClass="textoExemplo" />
 					</h:panelGroup>
 				</h:panelGrid>
@@ -74,7 +89,7 @@
 			<p:commandButton id="btnPesquisar" value="Pesquisar"
 					actionListener="#{exemploMB.pesquisar}" update="listaDePessoasLazy" 
 					disabled="#{exemploMB.pesquisaAvancadaAcionada}" />
-				
+				 
 			
 		</p:panel>
 		
@@ -118,29 +133,6 @@
 					model="#{exemploMB.geoModel}"  
 					style="width:100%;height:400px" />
 		</p:panel>
-
-		<p:dialog header="Modal Dialog" widgetVar="dlg2" modal="true" height="400" width="600">
-			<p>
-				<h:outputText value="todas estas palavras" />
-				<p:inputText id="txt1" value="#{exemploMB.filtro.todos}" />
-			</p>
-			<p>
-				<h:outputText value="expressao" />
-				<p:inputText id="txt2" value="#{exemploMB.filtro.expressao}" />
-			</p>
-			<p>
-				<h:outputText value="qualquer uma destas palavras:" />
-				<p:inputText id="txt3" value="#{exemploMB.filtro.ou}" />
-			</p>
-			<p>
-				<h:outputText value="nenhuma destas palavras:" />
-				<p:inputText id="txt4" value="#{exemploMB.filtro.nao}" />
-			</p>
-			<p>
-				<p:commandButton value="converter"
-					actionListener="#{exemploMB.converter}" update="pesquisa" />
-			</p>
-		</p:dialog>
 
 	
 	</h:form>
